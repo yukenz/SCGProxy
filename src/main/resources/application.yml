@@ -1,0 +1,9 @@
+spring:
+  application:
+    name: gwproxy
+gw:
+  proxy:
+    records:
+      - id: dummy_dynamic_host_route
+        predicate: dummyjson.com
+        uri: http://dummyjson.com
