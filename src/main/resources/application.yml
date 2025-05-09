@@ -3,7 +3,9 @@ spring:
     name: gwproxy
 gw:
   cors:
-    origin: http://localhost:3000
+    origin:
+      - http://localhost:3000
+      - http://localhost:8080
   proxy:
     records:
       - id: midtrans_dynamic_host_route
