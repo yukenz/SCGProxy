@@ -1,0 +1,14 @@
+spring:
+  application:
+    name: gwproxy
+gw:
+  cors:
+    origin: http://localhost:3000
+  proxy:
+    records:
+      - id: midtrans_dynamic_host_route
+        predicate: openapi.stg.midtrans.com
+        uri: https://openapi.stg.midtrans.com
+      - id: apigw_dynamic_host_route
+        predicate: 10.0.118.39:5555
+        uri: http://10.0.118.39:5555
