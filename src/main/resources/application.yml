@@ -1,17 +1,35 @@
 spring:
+  cloud:
+    gateway:
+      x-forwarded.for-enabled: false
+      x-forwarded.host-enabled: false
+      x-forwarded.port-enabled: false
+      x-forwarded.proto-enabled: false
+      x-forwarded.prefix-enabled: false
+      x-forwarded.for-append: false
+      x-forwarded.host-append: false
+      x-forwarded.port-append: false
+      x-forwarded.proto-append: false
+      x-forwarded.prefix-append: false
   application:
     name: gwproxy
 gw:
+  proxy:
+    http:
+      enable: true
+      host: localhost
+      port: 8080
   cors:
     origin:
       - "*"
       - http://localhost:3000
       - http://localhost:8080
-  proxy:
-    records:
-      - id: apigw_dynamic_host_route
-        predicate: 10.0.118.39:5555
-        uri: http://10.0.118.39:5555
-      - id: coin_gecko
-        predicate: api.geckoterminal.com
-        uri: https://api.geckoterminal.com/api/v2
+  records:
+    - id: apigw_dynamic_host_route
+      predicate: 10.0.118.39:5555
+      uri: http://10.0.118.39:5555
+      prefix-path:
+    - id: coin_gecko
+      predicate: api.geckoterminal.com
+      uri: https://api.geckoterminal.com
+      prefix-path: /api/v2

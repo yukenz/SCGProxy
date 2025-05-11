@@ -19,6 +19,7 @@ public class CustomFactoryRoute implements Function<PredicateSpec, Buildable<Rou
     // PROPS
     private final String dynamichostPredicate;
     private final String dynamichostUri;
+    private final String prefixPath;
 
 
     @Override
@@ -33,6 +34,7 @@ public class CustomFactoryRoute implements Function<PredicateSpec, Buildable<Rou
         // Filters
         Function<GatewayFilterSpec, UriSpec> MIDTRANS_FILTER = filters -> filters
                 .setHostHeader(dynamichostPredicate)
+                .prefixPath(prefixPath)
                 .addRequestHeader(X_PROCESSED_BY, X_PROCESSED_BY_VALUE);
 
 
@@ -41,6 +43,7 @@ public class CustomFactoryRoute implements Function<PredicateSpec, Buildable<Rou
         // Conditional
         BooleanSpec predicate = predicateSpec
                 .header(X_DYNAMIC_HOST, dynamichostPredicate);
+
 
         return predicate
                 .filters(MIDTRANS_FILTER)

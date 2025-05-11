@@ -1,7 +1,8 @@
 package id.co.awan.gwproxy;
 
 import id.co.awan.gwproxy.model.GatewayCorsOriginList;
-import id.co.awan.gwproxy.model.GatewayRecordProxyList;
+import id.co.awan.gwproxy.model.GatewayHttpProxy;
+import id.co.awan.gwproxy.model.GatewayRecordList;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.SpringApplication;
@@ -12,8 +13,9 @@ import org.springframework.boot.context.properties.EnableConfigurationProperties
 @RequiredArgsConstructor
 @Slf4j
 @EnableConfigurationProperties({
-        GatewayRecordProxyList.class,
-        GatewayCorsOriginList.class
+        GatewayRecordList.class,
+        GatewayCorsOriginList.class,
+        GatewayHttpProxy.class
 })
 public class GwproxyApplication {
 

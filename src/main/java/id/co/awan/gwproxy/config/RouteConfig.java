@@ -1,7 +1,7 @@
 package id.co.awan.gwproxy.config;
 
-import id.co.awan.gwproxy.model.GatewayRecordProxy;
-import id.co.awan.gwproxy.model.GatewayRecordProxyList;
+import id.co.awan.gwproxy.model.GatewayRecord;
+import id.co.awan.gwproxy.model.GatewayRecordList;
 import id.co.awan.gwproxy.route.CustomFactoryRoute;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.cloud.gateway.route.RouteLocator;
@@ -18,11 +18,11 @@ public class RouteConfig {
     @Bean
     public RouteLocator customRouteLocator(
             RouteLocatorBuilder builder,
-            GatewayRecordProxyList gatewayRecordProxyList
+            GatewayRecordList gatewayRecordList
     ) {
 
 
-        List<GatewayRecordProxy> records = gatewayRecordProxyList.getRecords();
+        List<GatewayRecord> records = gatewayRecordList.getRecords();
 
         if (records.isEmpty()) {
             throw new IllegalStateException("No Proxy records found");
@@ -37,16 +37,12 @@ public class RouteConfig {
             String id = record.getId();
             String predicate = record.getPredicate();
             String uri = record.getUri();
+            String prefixPath = record.getPrefixPath();
 
-            CustomFactoryRoute customFactoryRoute = new CustomFactoryRoute(predicate, uri);
+            CustomFactoryRoute customFactoryRoute = new CustomFactoryRoute(predicate, uri, prefixPath);
 
-            log.info("""
-                            \n
-                                ID : {}
-                                PREDICATE: {}
-                                URI: {}
-                            """,
-                    id, predicate, uri);
+            log.info(record.toString());
+
             // Registering
             routeBuilder.route(id, customFactoryRoute);
         });
