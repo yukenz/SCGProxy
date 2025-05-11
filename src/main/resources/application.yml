@@ -28,8 +28,9 @@ gw:
     - id: apigw_dynamic_host_route
       predicate: 10.0.118.39:5555
       uri: http://10.0.118.39:5555
-      prefix-path:
+      cache-config: 3|30
     - id: coin_gecko
       predicate: api.geckoterminal.com
       uri: https://api.geckoterminal.com
+      cache-config: 3|10
       prefix-path: /api/v2

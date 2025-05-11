@@ -15,6 +15,7 @@ public class GatewayRecord {
     private String predicate;
     private String prefixPath;
     private String uri;
+    private String cacheConfig;
 
     @Override
     public String toString() {
@@ -24,7 +25,8 @@ public class GatewayRecord {
                             PREDICATE: %s
                             URI: %s
                             PREFIX_PATH: %s
+                            CACHE: %s
                         """,
-                id, predicate, uri, prefixPath);
+                id, predicate, uri, prefixPath,cacheConfig);
     }
 }

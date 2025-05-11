@@ -34,17 +34,11 @@ public class RouteConfig {
         log.info("=== Registering Route ===");
         records.forEach(record -> {
 
-            String id = record.getId();
-            String predicate = record.getPredicate();
-            String uri = record.getUri();
-            String prefixPath = record.getPrefixPath();
-
-            CustomFactoryRoute customFactoryRoute = new CustomFactoryRoute(predicate, uri, prefixPath);
-
-            log.info(record.toString());
 
             // Registering
-            routeBuilder.route(id, customFactoryRoute);
+            log.info(record.toString());
+            routeBuilder.route(record.getId(), new CustomFactoryRoute(record));
+
         });
 
         log.info("=== Finish Registering Route ===");
