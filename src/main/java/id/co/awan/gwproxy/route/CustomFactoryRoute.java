@@ -6,10 +6,10 @@ import org.springframework.cloud.gateway.route.Route;
 import org.springframework.cloud.gateway.route.builder.*;
 
 import java.net.URI;
-import java.util.List;
-import java.util.Map;
 import java.util.Objects;
 import java.util.function.Function;
+
+import static id.co.awan.gwproxy.var.DefinitionVariable.*;
 
 @RequiredArgsConstructor
 @Slf4j
@@ -33,21 +33,14 @@ public class CustomFactoryRoute implements Function<PredicateSpec, Buildable<Rou
         // Filters
         Function<GatewayFilterSpec, UriSpec> MIDTRANS_FILTER = filters -> filters
                 .setHostHeader(dynamichostPredicate)
-                .addRequestHeader("X-Processed-By", "SpringGateway")
-                .metadata(Map.of("cors",
-                        Map.of(
-                                "allowedOrigins", "http://localhost:3000",
-                                "allowedMethods", List.of("POST", "GET"),
-                                "allowedHeaders", "*"
-                        )
-                ));
+                .addRequestHeader(X_PROCESSED_BY, X_PROCESSED_BY_VALUE);
 
 
         String uri = Objects.requireNonNull(dynamichostUri);
 
         // Conditional
         BooleanSpec predicate = predicateSpec
-                .header("X-Dynamic-Host", dynamichostPredicate);
+                .header(X_DYNAMIC_HOST, dynamichostPredicate);
 
         return predicate
                 .filters(MIDTRANS_FILTER)

@@ -4,6 +4,7 @@ spring:
 gw:
   cors:
     origin:
+      - "*"
       - http://localhost:3000
       - http://localhost:8080
   proxy:
@@ -11,3 +12,6 @@ gw:
       - id: apigw_dynamic_host_route
         predicate: 10.0.118.39:5555
         uri: http://10.0.118.39:5555
+      - id: coin_gecko
+        predicate: api.geckoterminal.com
+        uri: https://api.geckoterminal.com/api/v2

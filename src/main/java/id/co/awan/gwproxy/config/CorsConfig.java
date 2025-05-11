@@ -1,7 +1,6 @@
-package id.co.awan.gwproxy.customize;
+package id.co.awan.gwproxy.config;
 
 import id.co.awan.gwproxy.model.GatewayCorsOriginList;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.cors.CorsConfiguration;

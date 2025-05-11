@@ -1,7 +1,8 @@
 package id.co.awan.gwproxy.config;
 
-import id.co.awan.gwproxy.record.GatewayProxyRecord;
-import id.co.awan.gwproxy.route.GatewayProxyRouteFactory;
+import id.co.awan.gwproxy.model.GatewayRecordProxy;
+import id.co.awan.gwproxy.model.GatewayRecordProxyList;
+import id.co.awan.gwproxy.route.CustomFactoryRoute;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.cloud.gateway.route.RouteLocator;
 import org.springframework.cloud.gateway.route.builder.RouteLocatorBuilder;
@@ -15,29 +16,30 @@ import java.util.List;
 public class RouteConfig {
 
     @Bean
-    public RouteLocator routeLocator(
+    public RouteLocator customRouteLocator(
             RouteLocatorBuilder builder,
-            GatewayRecordProxyConfig gatewayRecordProxyConfig
+            GatewayRecordProxyList gatewayRecordProxyList
     ) {
-        List<GatewayProxyRecord> records = gatewayRecordProxyConfig.getRecords();
-        RouteLocatorBuilder.Builder routeBuilder = builder.routes();
 
-        // Record must not be empty
+
+        List<GatewayRecordProxy> records = gatewayRecordProxyList.getRecords();
+
         if (records.isEmpty()) {
             throw new IllegalStateException("No Proxy records found");
         }
 
-        // Start Registerin Proxy Route to the Gateway
-        log.info("=== Registering Gateway Proxy Route ===");
+
+        RouteLocatorBuilder.Builder routeBuilder = builder.routes();
+
+        log.info("=== Registering Route ===");
         records.forEach(record -> {
 
-            // Destruct record properties
-            var id = record.getId();
-            var predicate = record.getPredicate();
-            var uri = record.getUri();
+            String id = record.getId();
+            String predicate = record.getPredicate();
+            String uri = record.getUri();
 
-            // Registering
-            routeBuilder.route(id, new GatewayProxyRouteFactory(predicate, uri));
+            CustomFactoryRoute customFactoryRoute = new CustomFactoryRoute(predicate, uri);
+
             log.info("""
                             \n
                                 ID : {}
@@ -45,10 +47,13 @@ public class RouteConfig {
                                 URI: {}
                             """,
                     id, predicate, uri);
+            // Registering
+            routeBuilder.route(id, customFactoryRoute);
         });
-        log.info("=== Finish Registering Gateway Proxy Route ===");
 
+        log.info("=== Finish Registering Route ===");
         return routeBuilder.build();
+
     }
 
 }
