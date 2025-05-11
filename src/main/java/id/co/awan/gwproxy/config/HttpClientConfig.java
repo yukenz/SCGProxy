@@ -9,6 +9,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.cloud.gateway.config.HttpClientCustomizer;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import reactor.netty.http.client.HttpClient;
 import reactor.netty.transport.ProxyProvider;
 
 import javax.net.ssl.SSLException;
@@ -30,10 +31,12 @@ public class HttpClientConfig {
 
         return httpClient -> {
 
-            httpClient.secure(sslContextSpec -> sslContextSpec.sslContext(sslContext));
+            HttpClient httpClientInsecure = httpClient.secure(sslContextSpec -> sslContextSpec.sslContext(sslContext));
 
+            // Return HttpClientProxy if enable
+            log.info(gatewayHttpProxy.toString());
             if (gatewayHttpProxy.getEnable()) {
-                httpClient
+                return httpClientInsecure
                         .proxy(typeSpec -> {
                             typeSpec.type(ProxyProvider.Proxy.HTTP)
                                     .host(gatewayHttpProxy.getHost())
@@ -41,8 +44,7 @@ public class HttpClientConfig {
                         });
             }
 
-
-            return httpClient;
+            return httpClientInsecure;
         };
     }
 
