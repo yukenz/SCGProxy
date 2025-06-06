@@ -19,6 +19,7 @@ spring:
       x-forwarded.port-append: false
       x-forwarded.proto-append: false
       x-forwarded.prefix-append: false
+      forwarded.enabled: false
   application:
     name: gwproxy
 gw:
