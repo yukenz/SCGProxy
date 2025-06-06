@@ -31,7 +31,10 @@ public class HttpClientConfig {
 
         return httpClient -> {
 
-            HttpClient httpClientInsecure = httpClient.secure(sslContextSpec -> sslContextSpec.sslContext(sslContext));
+            HttpClient httpClientInsecure = httpClient
+                    .secure(sslContextSpec -> sslContextSpec.sslContext(sslContext))
+                    // Disable Keep Alive
+                    .keepAlive(false);
 
             // Return HttpClientProxy if enable
             log.info(gatewayHttpProxy.toString());
